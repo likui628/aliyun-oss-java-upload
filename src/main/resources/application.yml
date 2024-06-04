@@ -1,0 +1,11 @@
+spring:
+  application:
+    name:
+      aliyun-oss
+aliyun:
+  oss:
+    endpoint:
+    accessKeyId:
+    accessKeySecret:
+    bucketName:
+    callbackUrl:
