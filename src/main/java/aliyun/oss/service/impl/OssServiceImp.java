@@ -30,13 +30,13 @@ public class OssServiceImp implements OssService {
     private static final long FILE_LIMIT = 10 * 1024 * 1024;
 
     @Override
-    public String getPresignedUrl(String key) {
+    public String getPresignedUrl(String key, HttpMethod method) {
         try {
             Date expiration = new Date(System.currentTimeMillis() + EXPIRE_TIME);
 
             GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(
                     ossProperties.getBucketName(),
-                    key, HttpMethod.PUT);
+                    key, method);
             request.setExpiration(expiration);
 
             URL signedUrl = ossClient.generatePresignedUrl(request);
