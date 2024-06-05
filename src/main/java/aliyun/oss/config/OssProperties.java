@@ -15,4 +15,7 @@ public class OssProperties {
     private String region;
 
     private String bucketName;
+
+    @Getter
+    private String ossAccessKeyId = System.getenv("OSS_ACCESS_KEY_ID");
 }

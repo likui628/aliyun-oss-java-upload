@@ -19,4 +19,10 @@ public class OssController {
         String presignedUrl = ossService.getPresignedUrl(key);
         return ResponseEntity.ok(presignedUrl);
     }
+
+    @GetMapping("/policy")
+    public ResponseEntity<?> policy() {
+        String policy = ossService.getPolicy();
+        return ResponseEntity.ok(policy);
+    }
 }
