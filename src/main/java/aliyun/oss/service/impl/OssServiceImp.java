@@ -14,8 +14,8 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.stereotype.Service;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @Service
@@ -61,7 +61,7 @@ public class OssServiceImp implements OssService {
             policyConds.addConditionItem(PolicyConditions.COND_CONTENT_LENGTH_RANGE, 0, FILE_LIMIT);
             String postPolicy = ossClient.generatePostPolicy(expiration, policyConds);
 
-            byte[] binaryData = postPolicy.getBytes("utf-8");
+            byte[] binaryData = postPolicy.getBytes(StandardCharsets.UTF_8);
             String encodedPolicy = BinaryUtil.toBase64String(binaryData);
             String postSignature = ossClient.calculatePostSignature(postPolicy);
             response.put("ossAccessKeyId", ossProperties.getOssAccessKeyId());
@@ -72,12 +72,6 @@ public class OssServiceImp implements OssService {
         } catch (OSSException oe) {
             System.out.println("Caught an OSSException, which means your request made it to OSS, "
                     + "but was rejected with an error response for some reason.");
-            // 假设此方法存在
-            System.out.println("HTTP Status Code: " + oe.getRawResponseError());
-            System.out.println("Error Message: " + oe.getErrorMessage());
-            System.out.println("Error Code:       " + oe.getErrorCode());
-            System.out.println("Request ID:      " + oe.getRequestId());
-            System.out.println("Host ID:           " + oe.getHostId());
         } catch (ClientException ce) {
             System.out.println("Caught an ClientException, which means the client encountered "
                     + "a serious internal problem while trying to communicate with OSS, "
@@ -85,10 +79,7 @@ public class OssServiceImp implements OssService {
             System.out.println("Error Message: " + ce.getMessage());
         } catch (JSONException e) {
             throw new RuntimeException(e);
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        } finally {
-            return response.toString();
         }
+        return response.toString();
     }
 }
