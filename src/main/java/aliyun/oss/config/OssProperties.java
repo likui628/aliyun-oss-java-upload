@@ -13,4 +13,6 @@ public class OssProperties {
     private String endpoint;
 
     private String region;
+
+    private String bucketName;
 }
