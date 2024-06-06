@@ -1,0 +1,280 @@
+{
+	"info": {
+		"_postman_id": "d24129a3-628b-4729-ad0e-8a50b736f525",
+		"name": "localhost",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11980715"
+	},
+	"item": [
+		{
+			"name": "presignedUrl",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var presignedUrl=pm.response.text();\r",
+							"pm.collectionVariables.set(\"presignedUrl\",presignedUrl);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/aliyun/oss/presignedUrl?key=test/test.png",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"aliyun",
+						"oss",
+						"presignedUrl"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "test/test.png"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "uploadFileResignedUrl",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"connection": true,
+					"accept-encoding": true,
+					"accept": true,
+					"host": true,
+					"user-agent": true,
+					"content-type": true,
+					"content-length": true
+				}
+			},
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "image/png",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/likui/Desktop/test.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{presignedUrl}}",
+					"host": [
+						"{{presignedUrl}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "policy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var text=pm.response.text();\r",
+							"var jsonData=JSON.parse(text);\r",
+							"var {ossAccessKeyId,policy,signature,host}=jsonData;\r",
+							"pm.collectionVariables.set(\"ossAccessKeyId\",ossAccessKeyId);\r",
+							"pm.collectionVariables.set(\"policy\",policy);\r",
+							"pm.collectionVariables.set(\"signature\",signature);\r",
+							"pm.collectionVariables.set(\"host\",host);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/aliyun/oss/policy",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"aliyun",
+						"oss",
+						"policy"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "uploadFilePolicy",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "test.png",
+							"type": "text"
+						},
+						{
+							"key": "policy",
+							"value": "{{policy}}",
+							"type": "text"
+						},
+						{
+							"key": "OSSAccessKeyId",
+							"value": "{{ossAccessKeyId}}",
+							"type": "text"
+						},
+						{
+							"key": "signature",
+							"value": "{{signature}}",
+							"type": "text"
+						},
+						{
+							"key": "key",
+							"value": "test/test.png",
+							"type": "text"
+						},
+						{
+							"key": "success_action_status",
+							"value": "200",
+							"type": "text"
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/likui/Desktop/test.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}",
+					"host": [
+						"{{host}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "fileUrl",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/aliyun/oss/url?key=test/test.png",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"aliyun",
+						"oss",
+						"url"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "test/test.png"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "uploadFile",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/likui/Desktop/F_VbIdpa8AAWTbQ.jpg"
+						},
+						{
+							"key": "path",
+							"value": "a/b/c",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/aliyun/oss/upload",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"aliyun",
+						"oss",
+						"upload"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "presignedUrl",
+			"value": ""
+		},
+		{
+			"key": "ossAccessKeyId",
+			"value": ""
+		},
+		{
+			"key": "policy",
+			"value": ""
+		},
+		{
+			"key": "signature",
+			"value": ""
+		},
+		{
+			"key": "host",
+			"value": ""
+		}
+	]
+}
