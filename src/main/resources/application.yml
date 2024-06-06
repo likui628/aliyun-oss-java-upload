@@ -1,9 +1,12 @@
 spring:
+  profiles:
+    active: local
   application:
     name:
       aliyun-oss
 aliyun:
   oss:
     endpoint:
-    region: 
+    region:
+    bucketName:
     callbackUrl:
