@@ -13,7 +13,10 @@ import lombok.AllArgsConstructor;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -81,5 +84,28 @@ public class OssServiceImp implements OssService {
             throw new RuntimeException(e);
         }
         return response.toString();
+    }
+
+    @Override
+    public boolean uploadFile(MultipartFile file, String path) {
+        boolean result = false;
+        try {
+            String objectName = path + "/" + file.getOriginalFilename();
+            ossClient.putObject(ossProperties.getBucketName(), objectName, new ByteArrayInputStream(file.getBytes()));
+            result = true;
+        } catch (OSSException oe) {
+            System.out.println("Caught an OSSException, which means your request made it to OSS, "
+                    + "but was rejected with an error response for some reason.");
+            System.out.println("Error Message:" + oe.getErrorMessage());
+            System.out.println("Error Code:" + oe.getErrorCode());
+            System.out.println("Request ID:" + oe.getRequestId());
+            System.out.println("Host ID:" + oe.getHostId());
+        } catch (ClientException | IOException ce) {
+            System.out.println("Caught an ClientException, which means the client encountered "
+                    + "a serious internal problem while trying to communicate with OSS, "
+                    + "such as not being able to access the network.");
+            System.out.println("Error Message:" + ce.getMessage());
+        }
+        return result;
     }
 }
